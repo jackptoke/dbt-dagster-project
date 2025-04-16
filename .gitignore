@@ -3,6 +3,7 @@ target/
 dbt_packages/
 logs/
 
+.idea
 .env
 .user.yml
 .logs_queue
