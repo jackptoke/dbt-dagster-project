@@ -1,0 +1,27 @@
+version: 2
+
+sources:
+  - name: AIRBNB
+    schema: RAW
+    tables:
+      - name: LISTINGS
+        identifier: RAW_LISTINGS
+        columns:
+          - name: room_type
+            tests:
+              - dbt_expectations.expect_column_distinct_count_to_equal:
+                  value: 4
+          - name: price
+            tests:
+              - dbt_expectations.expect_column_values_to_match_regex:
+                  regex: "^\\\\$\\\\d+\\\\.\\\\d{2}$"
+
+      - name: HOSTS
+        identifier: RAW_HOSTS
+
+      - name: REVIEWS
+        identifier: RAW_REVIEWS
+        loaded_at_field: date
+        freshness:
+          warn_after: { count: 1, period: hour }
+          error_after: { count: 24, period: hour }
